@@ -1,0 +1,25 @@
+<html>
+<h1>Photos of <%= @users.first_name %> <%= @users.last_name %></h1>
+<body>
+<% @photos.each do |photo| %>
+    <%= image_tag photo.file_name %><br/>
+    <b>Uploaded at :</b>
+    <%= photo.date_time %><br/>
+    <% @commentPerPhoto = @comments.where(:photo_id => photo.id) %>
+    <% if @commentPerPhoto.present? %>
+        <b>Comments:</b><br/>
+        <% @commentPerPhoto.each do |comment| %>
+            <% @commentBy = User.find(comment.user_id) %>
+            <%= "--" %>
+            <%= link_to @commentBy.first_name, :controller => 'photos', :action => 'index', :id => @commentBy.id %>
+            <b> : </b>
+            <%= comment.comment_text %><br/>
+            <b><%= @commentBy.first_name %></b>
+            <b>commented on </b>
+            <%= comment.date_time %><br/>
+        <% end %>
+    <% end %>
+    <br/> <br/> <br/>
+<% end %>
+</body>
+</html>
